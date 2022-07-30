@@ -1,42 +1,63 @@
 <div class="form-group row">
-    <label class="col-sm-2 col-form-label">Search User:</label>
-    <div class="col-sm-10">
-      <!-- <input [(ngModel)]="filter" class="form-control" /> -->
-      <input class="form-control" />
-    </div>
+  <label class="col-sm-2 col-form-label">Search User:</label>
+  <div class="col-sm-10">
+    <!-- <input [(ngModel)]="filter" class="form-control" /> -->
+    <input class="form-control" />
   </div>
+</div>
 
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>
+        <input #headerCheckBox type="checkbox" (change)="onChangeHeaderCheckBoxHandler(headerCheckBox)" [checked]="headerChecked" [indeterminate]="headerIndeterminate">
+      </th>
+      <th>User Details</th>
+      <th>Role</th>
+      <th>Department</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of rowsData">
+      <td>
+        <input type="checkbox" [(ngModel)]="row.isChecked" (change)="onChangeRowCheckBoxHandler()">
+      </td>
+      <td>
+        <app-user-details [user]="row.user"> </app-user-details>
+      </td>
+      <td>{{ row.user.role }}</td>
+      <td>{{ row.user.department }}</td>
+      <td>
+        <div>
+          <button class="btn btn-primary me-3 action-button fs-4">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button class="btn btn-danger action-button fs-4" (click)="onDeleteHandler(row)">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </td>
+      <!-- <td>{{ course.code | lowercase | replace: "-":" " }}</td> -->
+      <!-- <td>{{ course.releaseDate | date: "dd/MM/yyyy" }}</td> -->
+      <!-- <td>
+        <app-star [rating]="course.rating"></app-star>
+      </td> -->
+      <!-- <td>
+        <a
+          [routerLink]="['/courses/info', course.id]"
+          class="btn btn-primary me-2"
+          >Edit</a
+        >
+        <button (click)="deleteById(course.id)" class="btn btn-danger">
+          Delete
+        </button>
+      </td> -->
+    </tr>
+  </tbody>
+</table>
 
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>User Details</th>
-        <th>Role</th>
-        <th>Department</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <!-- <tbody>
-      <tr *ngFor="let course of filteredCourses">
-        <td>
-          <img
-            [src]="course.imageUrl"
-            alt="Imagem do curso"
-            width="40"
-            height="40"
-          />
-        </td>
-        <td>{{ course.name }}</td>
-        <td>{{ course.price }}</td>
-        <td>{{ course.code | lowercase | replace: "-":" " }}</td>
-        <td>{{ course.releaseDate | date: "dd/MM/yyyy" }}</td>
-        <td>
-          <app-star [rating]="course.rating"></app-star>
-        </td>
-        <td>
-          <a [routerLink]="['/courses/info', course.id]" class="btn btn-primary me-2">Edit</a>
-          <button (click)="deleteById(course.id)" class="btn btn-danger">Delete</button>
-        </td>
-      </tr>
-    </tbody> -->
-  </table>
+<button class="btn btn-danger fs-6" [hidden]="!(headerChecked||headerIndeterminate)" (click)="onDeleteCheckedUserHandler()">
+  <i class="bi bi-trash"></i>
+  Delete Markeds
+</button>

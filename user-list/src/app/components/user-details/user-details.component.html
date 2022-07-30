@@ -1,1 +1,12 @@
-<p>user-details works!</p>
+
+<div class="wrapper">
+    <img [src]="user?.avatarUrl" alt="User Avatar" width="80" height="80" class="me-3">
+    <div class="details-wrapper">
+        <span class="name fs-4">{{user?.name}}</span>
+        <div>
+            <i class="bi bi-envelope-paper me-1 email-icon"></i>
+            <span class="fs-6">{{user?.email}}</span>
+        </div>
+        <span>Added at</span>
+    </div>
+</div>

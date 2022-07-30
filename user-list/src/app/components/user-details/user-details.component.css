@@ -1,0 +1,27 @@
+.wrapper{
+    display: flex;
+    min-height: 100px;
+    align-items: stretch;
+}
+
+.wrapper img{
+    border-radius: 50%;
+    align-self: center;
+}
+
+.details-wrapper{
+    display: flex;
+    flex-direction: column;
+}
+
+span:last-of-type{
+    margin-top: auto;
+}
+
+span.name{
+    color: rgb(14, 31, 189)
+}
+
+.email-icon{
+    color: rgb(66, 65, 65)
+}
