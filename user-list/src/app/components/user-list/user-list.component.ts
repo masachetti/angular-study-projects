@@ -8,40 +8,55 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./user-list.component.css'],
 })
 export class UserListComponent implements OnInit {
-  rowsData: RowData[] = [];
-  headerChecked: boolean = false;
-  headerIndeterminate: boolean = false;
+  _rowsData: RowData[] = [];
+  rowsToShow: RowData[] = [];
+
+  globalCheckBoxCheckedState: boolean = false;
+  globalCheckBoxIndeterminateState: boolean = false;
+  globalCheckBoxDisabled: boolean = false;
 
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.rowsData = this.userService.retrieveAll().map((singleUser) => ({
+    this._rowsData = this.userService.retrieveAll().map((singleUser) => ({
       user: singleUser,
       isChecked: false,
     }));
+    this.rowsToShow = this._rowsData;
   }
 
   onChangeHeaderCheckBoxHandler(checkBox: HTMLInputElement) {
     checkBox.checked ? this.checkAllRows() : this.unCheckAllRows();
-    this.headerChecked = checkBox.checked;
+    this.globalCheckBoxCheckedState = checkBox.checked;
   }
 
-  checkAllRows = () => this.rowsData.forEach((row) => (row.isChecked = true));
+  checkAllRows = () => this.rowsToShow.forEach((row) => (row.isChecked = true));
   unCheckAllRows = () =>
-    this.rowsData.forEach((row) => (row.isChecked = false));
+    this.rowsToShow.forEach((row) => (row.isChecked = false));
 
   onChangeRowCheckBoxHandler() {
-    if (this.rowsData.every((data) => data.isChecked)) {
-      console.log('Every true', this.rowsData);
-      this.headerChecked = true;
-      this.headerIndeterminate = false;
-    } else if (this.rowsData.some((data) => data.isChecked)) {
-      this.headerChecked = false;
-      this.headerIndeterminate = true;
+    this.updateHeaderCheckBoxState();
+  }
+
+  private updateHeaderCheckBoxState() {
+    if (this.rowsToShow.length === 0){
+      this.globalCheckBoxCheckedState = false;
+      this.globalCheckBoxIndeterminateState = false;
+      this.globalCheckBoxDisabled = true;
+      return
+    }
+    this.globalCheckBoxDisabled = false;
+    if (this.rowsToShow.every((data) => data.isChecked)) {
+      console.log('Every true', this.rowsToShow);
+      this.globalCheckBoxCheckedState = true;
+      this.globalCheckBoxIndeterminateState = false;
+    } else if (this.rowsToShow.some((data) => data.isChecked)) {
+      this.globalCheckBoxCheckedState = false;
+      this.globalCheckBoxIndeterminateState = true;
     } else {
-      console.log('All false', this.rowsData);
-      this.headerChecked = false;
-      this.headerIndeterminate = false;
+      console.log('All false', this.rowsToShow);
+      this.globalCheckBoxCheckedState = false;
+      this.globalCheckBoxIndeterminateState = false;
     }
   }
 
@@ -50,13 +65,31 @@ export class UserListComponent implements OnInit {
   }
 
   onDeleteCheckedUserHandler() {
-    this.rowsData.forEach((row) =>
+    this.rowsToShow.forEach((row) =>
       row.isChecked ? this.deleteUser(row.user) : ''
     );
   }
 
   deleteUser(user: User) {
     this.userService.deleteUser(user);
+  }
+
+  _filterBy: string = "";
+
+  set filter(value: string){
+    this._filterBy = value;
+
+    this.rowsToShow = this._rowsData.filter(
+      ({ user }) =>
+        user.name
+          .toLocaleLowerCase()
+          .indexOf(this._filterBy.toLocaleLowerCase()) > -1
+    );
+    this.updateHeaderCheckBoxState();
+  }
+
+  get filter(): string{
+    return this._filterBy;
   }
 }
 

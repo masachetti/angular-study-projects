@@ -1,8 +1,7 @@
 <div class="form-group row">
   <label class="col-sm-2 col-form-label">Search User:</label>
   <div class="col-sm-10">
-    <!-- <input [(ngModel)]="filter" class="form-control" /> -->
-    <input class="form-control" />
+    <input [(ngModel)]="filter" class="form-control" />
   </div>
 </div>
 
@@ -10,7 +9,14 @@
   <thead>
     <tr>
       <th>
-        <input #headerCheckBox type="checkbox" (change)="onChangeHeaderCheckBoxHandler(headerCheckBox)" [checked]="headerChecked" [indeterminate]="headerIndeterminate">
+        <input
+          #headerCheckBox
+          type="checkbox"
+          (change)="onChangeHeaderCheckBoxHandler(headerCheckBox)"
+          [checked]="globalCheckBoxCheckedState"
+          [indeterminate]="globalCheckBoxIndeterminateState"
+          [disabled]="globalCheckBoxDisabled"
+        />
       </th>
       <th>User Details</th>
       <th>Role</th>
@@ -19,9 +25,13 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let row of rowsData">
+    <tr *ngFor="let row of rowsToShow">
       <td>
-        <input type="checkbox" [(ngModel)]="row.isChecked" (change)="onChangeRowCheckBoxHandler()">
+        <input
+          type="checkbox"
+          [(ngModel)]="row.isChecked"
+          (change)="onChangeRowCheckBoxHandler()"
+        />
       </td>
       <td>
         <app-user-details [user]="row.user"> </app-user-details>
@@ -33,7 +43,10 @@
           <button class="btn btn-primary me-3 action-button fs-4">
             <i class="bi bi-pencil-square"></i>
           </button>
-          <button class="btn btn-danger action-button fs-4" (click)="onDeleteHandler(row)">
+          <button
+            class="btn btn-danger action-button fs-4"
+            (click)="onDeleteHandler(row)"
+          >
             <i class="bi bi-trash"></i>
           </button>
         </div>
@@ -57,7 +70,11 @@
   </tbody>
 </table>
 
-<button class="btn btn-danger fs-6" [hidden]="!(headerChecked||headerIndeterminate)" (click)="onDeleteCheckedUserHandler()">
+<button
+  class="btn btn-danger fs-6"
+  [hidden]="!(globalCheckBoxCheckedState || globalCheckBoxIndeterminateState)"
+  (click)="onDeleteCheckedUserHandler()"
+>
   <i class="bi bi-trash"></i>
   Delete Markeds
 </button>
