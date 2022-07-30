@@ -16,6 +16,7 @@
 
 span:last-of-type{
     margin-top: auto;
+    color: rgb(100, 91, 91);
 }
 
 span.name{
