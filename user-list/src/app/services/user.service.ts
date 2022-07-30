@@ -46,7 +46,7 @@ const USERS: User[] = [
     email: "josefinadejesus@gmail.com",
     role: "Developer",
     department: "Back End",
-    addedAt: "30/12/2015",
+    addedAt: "12/30/2015",
     avatarUrl: 'assets/images/user4.jpg'
   },
   {
@@ -54,7 +54,7 @@ const USERS: User[] = [
     email: "carlao@gmail.com",
     role: "Developer",
     department: "Back End",
-    addedAt: "02/10/2010",
+    addedAt: "10/02/2010",
     avatarUrl: 'assets/images/user5.jpg'
   },
   {
